@@ -13,6 +13,7 @@ int main() {
         cout << "4. Factorial\n";
         cout << "5. Múltiplos\n";
         cout << "6. Potencias desde n¹ hasta n⁵\n";
+        cout << "7. Columnas paralelas\n";
         cout << "0. Salir\n";
         cout << "Elige una opción: ";
         cin >> opcion;
@@ -44,7 +45,7 @@ int main() {
             cout << "Ingresa base y exponente (separados por espacio): ";
             cin >> a >> b;
             resultado = 1;  // Inicializa resultado
-                // Bucle para multiplicar la base 'b' veces
+            // Bucle para multiplicar la base 'b' veces
             for(int i = 0; i < b; i++) resultado *= a;
             cout << a << "^" << b << " = " << resultado << endl;
             break;
@@ -53,7 +54,7 @@ int main() {
             cout << "Ingresa un número: ";
             cin >> numero;
             resultado = 1; // Inicializa factorial
-                // Bucle para multiplicar números desde 2 hasta 'numero'
+            // Bucle para multiplicar números desde 2 hasta 'numero'
             for(int i = 2; i <= numero; i++) resultado *= i;
             cout << numero << "! = " << resultado << endl;
             break;
@@ -83,11 +84,21 @@ int main() {
             break;
         }
 
+        case 7: // Columnas paralelas
+        {
+            cout << "Columnas paralelas (1-50 y 50-1):" << endl;
+            // Se imprimen las dos columnas paralelas
+            for(int i = 1; i <= 50; i++) {
+                cout << i << "\t" << 51 - i << endl; // Se inserta tabulador para separar columnas
+            }
+            break;
+        }
+
         case 0: // Salir
             cout << "¡Hasta luego!\n";
             return 0; // Termina el programa
 
-        default: // Opción no valida, cuando se ingresa un texto, es decir, carácter no numérico
+        default: // Opción no valida
             cout << "Opción no válida\n";
         }
     }
