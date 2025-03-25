@@ -12,6 +12,7 @@ int main() {
         cout << "3. Potencia\n";
         cout << "4. Factorial\n";
         cout << "5. Múltiplos\n";
+        cout << "6. Potencias desde n¹ hasta n⁵\n";
         cout << "0. Salir\n";
         cout << "Elige una opción: ";
         cin >> opcion;
@@ -43,7 +44,7 @@ int main() {
             cout << "Ingresa base y exponente (separados por espacio): ";
             cin >> a >> b;
             resultado = 1;  // Inicializa resultado
-              // Bucle para multiplicar la base 'b' veces
+                // Bucle para multiplicar la base 'b' veces
             for(int i = 0; i < b; i++) resultado *= a;
             cout << a << "^" << b << " = " << resultado << endl;
             break;
@@ -52,7 +53,7 @@ int main() {
             cout << "Ingresa un número: ";
             cin >> numero;
             resultado = 1; // Inicializa factorial
-             // Bucle para multiplicar números desde 2 hasta 'numero'
+                // Bucle para multiplicar números desde 2 hasta 'numero'
             for(int i = 2; i <= numero; i++) resultado *= i;
             cout << numero << "! = " << resultado << endl;
             break;
@@ -65,6 +66,22 @@ int main() {
             for(int i = numero; i <= 100; i += numero) cout << i << " ";
             cout << endl;
             break;
+
+        case 6: // Potencias desde n¹ hasta n⁵
+        {
+            cout << "Ingrese un número N: ";
+            cin >> numero;
+
+            cout << "Las potencias de " << numero << " son:" << endl;
+
+            // Calculo e impresión de las potencias
+            int potencia = 1;
+            for(int i = 1; i <= 5; i++) {
+                potencia *= numero;  // Multiplicación acumulativa
+                cout << numero << "^" << i << " = " << potencia << endl;
+            }
+            break;
+        }
 
         case 0: // Salir
             cout << "¡Hasta luego!\n";
