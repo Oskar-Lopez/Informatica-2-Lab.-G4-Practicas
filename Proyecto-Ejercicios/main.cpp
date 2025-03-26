@@ -13,16 +13,17 @@ int main() {
     while(true) {
         // Mostrar menú de opciones al usuario
         cout << "\nMENU DE EJERCICIOS\n";
-        cout << "1. Determinar si un número es par o impar\n";
-        cout << "2. Encontrar el menor de dos números\n";
-        cout << "3. Calcular la potencia de un número\n";
-        cout << "4. Calcular el factorial de un número\n";
-        cout << "5. Mostrar múltiplos de un número hasta 100\n";
-        cout << "6. Mostrar potencias de un número desde n¹ hasta n⁵\n";
-        cout << "7. Mostrar columnas paralelas de números\n";
-        cout << "8. Calcular el promedio de números ingresados\n";
-        cout << "9. Determinar si es cuadrado perfecto\n";
-        cout << "0. Salir del programa\n";
+        cout << "1.  Determinar si un número es par o impar\n";
+        cout << "2.  Encontrar el menor de dos números\n";
+        cout << "3.  Calcular la potencia de un número\n";
+        cout << "4.  Calcular el factorial de un número\n";
+        cout << "5.  Mostrar múltiplos de un número hasta 100\n";
+        cout << "6.  Mostrar potencias de un número desde n¹ hasta n⁵\n";
+        cout << "7.  Mostrar columnas paralelas de números\n";
+        cout << "8.  Calcular el promedio de números ingresados\n";
+        cout << "9.  Determinar si es cuadrado perfecto\n";
+        cout << "10. Verificación de números palindromos\n";
+        cout << "0.  Salir del programa\n";
         cout << "Elige una opción: ";
         cin >> opcion;
 
@@ -164,6 +165,42 @@ int main() {
             }
 
             // Salir del switch-case
+            break;
+        }
+
+        case 10: // Verificación de números palíndromos
+        {
+            // Solicitar al usuario que ingrese un número para verificar
+            cout << "Ingrese un número: ";
+            // Leer el número ingresado y almacenarlo en la variable 'numero'
+            cin >> numero;
+
+            // Inicializar variable para almacenar el número invertido
+            int reverso = 0;
+            // Guardar una copia del número original para comparación posterior
+            int original = numero;
+
+            // Bucle para invertir el número digitos
+            while (numero != 0) {
+                // Obtener el último dígito del número usando módulo 10
+                int digito = numero % 10;
+                // Construir el número invertido:
+                // - Multiplicar el reverso actual por 10 para "mover" los dígitos
+                // - Sumar el nuevo dígito obtenido
+                reverso = reverso * 10 + digito;
+                // Eliminar el último dígito del número original dividiendo entre 10
+                numero /= 10;
+            }
+
+            // Comparar el número original con su versión invertida
+            if (original == reverso) {
+                // Si son iguales, es un palíndromo
+                cout << "El número " << original << " es un palíndromo." << endl;
+            } else {
+                // Si son diferentes, no es un palíndromo
+                cout << "El número " << original << " no es un palíndromo." << endl;
+            }
+            // Salir del switch-case para volver al menú principal
             break;
         }
 
