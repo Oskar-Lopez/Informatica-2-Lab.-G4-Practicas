@@ -23,6 +23,7 @@ int main() {
         cout << "8.  Calcular el promedio de números ingresados\n";
         cout << "9.  Determinar si es cuadrado perfecto\n";
         cout << "10. Verificación de números palindromos\n";
+        cout << "11. Convertir segundos a horas:minutos:segundos\n";
         cout << "0.  Salir del programa\n";
         cout << "Elige una opción: ";
         cin >> opcion;
@@ -201,6 +202,25 @@ int main() {
                 cout << "El número " << original << " no es un palíndromo." << endl;
             }
             // Salir del switch-case para volver al menú principal
+            break;
+        }
+
+        case 11: // Conversión de segundos a formato horas:minutos:segundos
+        {
+            int segundos;
+            // Solicitar al usuario que ingrese una cantidad de segundos
+            cout << "Ingrese una cantidad entera de segundos: ";
+            cin >> segundos;
+
+            // Calculo de las horas completas (1 hora = 3600 segundos)
+            int horas = segundos / 3600;
+            // Calculo de los minutos restantes después de extraer las horas
+            int minutos = (segundos % 3600) / 60;
+            // Calculo de los segundos restantes después de extraer horas y minutos
+            int segundosRestantes = segundos % 60;
+
+            // Mostrar el resultado formateado como HH:MM:SS
+            cout << "El tiempo es: " << horas << ":" << minutos << ":" << segundosRestantes << endl;
             break;
         }
 
