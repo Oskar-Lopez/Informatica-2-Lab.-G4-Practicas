@@ -1,4 +1,6 @@
 #include <iostream>
+#include <ctime>    // Proporciona funciones para trabajar con tiempo (como time() para obtener el tiempo actual)
+#include <cstdlib>  // Contiene funciones generales como srand() para semillas aleatorias y rand() para generar números aleatorios
 using namespace std;
 
 int main() {
@@ -26,6 +28,8 @@ int main() {
         cout << "11. Convertir segundos a horas:minutos:segundos\n";
         cout << "12. Dibujar un cuadrado con caracteres\n";
         cout << "13. Determinar tipo de triángulo\n";
+        cout << "14. Calcular aproximación a Pi\n";
+        cout << "15. Juego de adivinar el número\n";
         cout << "0.  Salir del programa\n";
         cout << "Elige una opción: ";
         cin >> opcion;
@@ -311,6 +315,85 @@ int main() {
                 // Todos los lados diferentes
                 cout << "El triángulo es escaleno." << endl;
             }
+            break;
+        }
+
+        case 14: // Opción para calcular el valor de Pi
+        {
+            int n; // Aquí guardaremos cuántos números usaremos para el cálculo
+            double pi = 0.0; // Empezamos con Pi en cero
+
+            // Pedimos al usuario cuántos números quiere usar
+            cout << "Ingrese número de elementos para aproximar Pi: ";
+            cin >> n;
+
+            // Reviso que el número sea positivo
+            if(n <= 0) {
+                cout << "Debe ingresar un número positivo.\n";
+                break; // Si no es positivo, salimos
+            }
+
+            // Calculo Pi sumando y restando fracciones
+            for(int i = 0; i < n; i++) {
+                // Calculamos cada parte de la suma
+                double termino = 1.0 / (2 * i + 1);
+
+                // Alternamos entre sumar y restar
+                if(i % 2 == 1) termino = -termino;
+
+                // Vamos acumulando los valores
+                pi += termino;
+            }
+
+            // Al final multiplico por 4 para obtener Pi
+            pi *= 4;
+
+            // Se muestra el resultado aproximado
+            cout << "Pi ≈ " << pi << "\n";
+
+            break;
+        }
+
+        case 15: // Juego de adivinar el número
+        {
+            // Esto hace que el número cambie cada vez que se ejecuta el programa
+            srand(time(0)); // Se inicializa el generador de números aleatorios usando la hora actual
+                            // como semilla para que sean diferentes en cada ejecución
+
+            // Generamos un número secreto entre 0 y 100
+            // rand() genera un número grande, y %101 lo convierte en 0-100
+            int numeroSecreto = rand() % 101;
+
+            // Variables para guardar el intento del usuario y contar sus intentos
+            int intentoUsuario;
+            int contadorIntentos = 0;
+
+            // Muestro las instrucciones iniciales al jugador
+            cout << "He pensado un número entre 0 y 100. ¡Adivínalo!\n";
+
+            // Inicio el bucle principal del juego
+            do {
+                // Pido al usuario que ingrese un número
+                cout << "Ingresa tu número: ";
+                cin >> intentoUsuario;
+
+                // Aumento el contador de intentos cada vez que prueba
+                contadorIntentos++;
+
+                // Comparo el número del usuario con el secreto
+                if (intentoUsuario > numeroSecreto) {
+                    // Si el número es mayor, damos una pista
+                    cout << "El número es menor.\n";
+                } else if (intentoUsuario < numeroSecreto) {
+                    // Si el número es menor, damos una pista
+                    cout << "El número es mayor.\n";
+                } else {
+                    // Si acierta, muestro mensaje de felicitación
+                    cout << "¡Correcto! Adivinaste el número " << numeroSecreto
+                         << " en " << contadorIntentos << " intentos.\n";
+                }
+            } while (intentoUsuario != numeroSecreto);  // Se repite hasta que acierte
+
             break;
         }
 
