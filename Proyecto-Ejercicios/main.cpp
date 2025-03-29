@@ -25,6 +25,7 @@ int main() {
         cout << "10. Verificación de números palindromos\n";
         cout << "11. Convertir segundos a horas:minutos:segundos\n";
         cout << "12. Dibujar un cuadrado con caracteres\n";
+        cout << "13. Determinar tipo de triángulo\n";
         cout << "0.  Salir del programa\n";
         cout << "Elige una opción: ";
         cin >> opcion;
@@ -276,6 +277,40 @@ int main() {
                 cout << endl;  // Salto de línea final
             }
 
+            break;
+        }
+
+        case 13: // Determinar tipo de triángulo
+        {
+            int lado1, lado2, lado3;  // Variables para almacenar los lados del triángulo
+
+            // Solicito al usuario los tres lados del triángulo
+            cout << "Ingrese el lado 1: ";
+            cin >> lado1;
+            cout << "Ingrese el lado 2: ";
+            cin >> lado2;
+            cout << "Ingrese el lado 3: ";
+            cin >> lado3;
+
+            // Primera validación: Desigualdad triangular (la suma de dos lados debe ser mayor que el tercero)
+            if (lado1 + lado2 <= lado3 || lado1 + lado3 <= lado2 || lado2 + lado3 <= lado1) {
+                cout << "No se puede formar un triángulo con estos lados." << endl;
+                break;  // Salir del case si no cumple la condición básica de triángulo
+            }
+
+            // Determinar el tipo de triángulo según la igualdad de sus lados
+            if (lado1 == lado2 && lado2 == lado3) {
+                // Todos los lados iguales
+                cout << "El triángulo es equilátero." << endl;
+            }
+            else if (lado1 == lado2 || lado2 == lado3 || lado1 == lado3) {
+                // Dos lados iguales
+                cout << "El triángulo es isósceles." << endl;
+            }
+            else {
+                // Todos los lados diferentes
+                cout << "El triángulo es escaleno." << endl;
+            }
             break;
         }
 
