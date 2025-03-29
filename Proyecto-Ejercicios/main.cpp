@@ -24,6 +24,7 @@ int main() {
         cout << "9.  Determinar si es cuadrado perfecto\n";
         cout << "10. Verificación de números palindromos\n";
         cout << "11. Convertir segundos a horas:minutos:segundos\n";
+        cout << "12. Dibujar un cuadrado con caracteres\n";
         cout << "0.  Salir del programa\n";
         cout << "Elige una opción: ";
         cin >> opcion;
@@ -221,6 +222,60 @@ int main() {
 
             // Mostrar el resultado formateado como HH:MM:SS
             cout << "El tiempo es: " << horas << ":" << minutos << ":" << segundosRestantes << endl;
+            break;
+        }
+
+        case 12: // Dibujar un cuadrado con caracteres
+        {
+            // Declaración de variable para almacenar el tamaño del cuadrado
+            int tamaño;
+
+            // Solicito al usuario que ingrese el tamaño del cuadrado
+            cout << "Ingrese el tamaño del cuadrado (mínimo 2): ";
+            cin >> tamaño;  // Leer y almacenar el valor ingresado
+
+            // Valido el tamaño mínimo requerido en la línea anterior
+            if(tamaño < 2) {
+                cout << "El tamaño debe ser al menos 2.\n";
+                break;  // Salir del case si el tamaño es inválido
+            }
+
+            // --------------------------
+            // Dibujo del borde superior
+            // --------------------------
+            // Bucle para imprimir una línea completa de caracteres '+'
+            for(int i = 0; i < tamaño; i++) {
+                cout << "+";  // Imprimir carácter de borde
+            }
+            cout << endl;  // Salto de línea al terminar el borde superior
+
+            // --------------------------
+            // Dibujo de las filas intermedias
+            // --------------------------
+            // Bucle para cada fila intermedia (total de filas - 2, no incluye bordes)
+            for(int i = 0; i < tamaño - 2; i++) {
+                cout << "+";  // Imprimir borde izquierdo
+
+                // Bucle para los espacios internos del cuadrado
+                for(int j = 0; j < tamaño - 2; j++) {
+                    cout << " ";  // Espacio vacío en el interior
+                }
+
+                cout << "+" << endl;  // Imprimir borde derecho y saltar línea
+            }
+
+            // --------------------------
+            // Dibujo del borde inferior
+            // --------------------------
+            // Verificación adicional para tamaños mayores a 1
+            if(tamaño > 1) {
+                // Bucle idéntico al borde superior
+                for(int i = 0; i < tamaño; i++) {
+                    cout << "+";  // Imprimir carácter de borde
+                }
+                cout << endl;  // Salto de línea final
+            }
+
             break;
         }
 
