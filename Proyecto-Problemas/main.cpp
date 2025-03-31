@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cmath>
 
 using namespace std;
 
@@ -10,6 +11,8 @@ void calcularSumatoriaMultiplos();
 void desgloseMonedas();
 void sumarTiempos();
 void aproximarConstanteE();
+void encontrarEnesimoPrimo();
+void encontrarMaxFactorPrimo();
 void mostrarMenuPrincipal();
 
 /**
@@ -34,6 +37,48 @@ int leerEntero(const string& mensaje) {
         cout << "Error: Entrada inválida. ";
         limpiarBuffer();
     }
+}
+
+/**
+ * @brief Determina si un número es primo
+ */
+bool esPrimo(int num) {
+    if (num <= 1) {
+        return false;
+    }
+    for (int i = 2; i <= sqrt(num); i++) {
+        if (num % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Encuentra el máximo factor primo de un número
+ */
+int maxFactorPrimo(int n) {
+    int maxFactor = 1;
+    // Si el número es par
+    while (n % 2 == 0) {
+        maxFactor = 2;
+        n /= 2;
+    }
+
+    // Ahora n es impar, compruebo divisores impares
+    for (int i = 3; i * i <= n; i += 2) {
+        while (n % i == 0) {
+            maxFactor = i;
+            n /= i;
+        }
+    }
+
+    // Si n es mayor que 2, es un factor primo
+    if (n > 2) {
+        maxFactor = n;
+    }
+
+    return maxFactor;
 }
 
 /**
@@ -169,6 +214,36 @@ void aproximarConstanteE() {
 }
 
 /**
+ * @brief Encuentra el n-ésimo número primo
+ */
+void encontrarEnesimoPrimo() {
+    cout << "\n=== ENÉSIMO NÚMERO PRIMO ===" << endl;
+    int n = leerEntero("Ingrese un número n: ");
+
+    int contador = 0;
+    int numero = 2;
+
+    while (contador < n) {
+        if (esPrimo(numero)) {
+            contador++;
+        }
+        numero++;
+    }
+
+    cout << "El enésimo número primo es: " << numero - 1 << endl;
+}
+
+/**
+ * @brief Encuentra el máximo factor primo de un número
+ */
+void encontrarMaxFactorPrimo() {
+    cout << "\n=== MÁXIMO FACTOR PRIMO ===" << endl;
+    int n = leerEntero("Ingrese un número: ");
+
+    cout << "El máximo factor primo de " << n << " es: " << maxFactorPrimo(n) << endl;
+}
+
+/**
  * @brief Muestra el menú principal
  */
 void mostrarMenuPrincipal() {
@@ -179,11 +254,13 @@ void mostrarMenuPrincipal() {
              << "\n2. Suma de tiempos"
              << "\n3. Aproximación de euler"
              << "\n4. Sumatoria de múltiplos"
-             << "\n5. Salir"
-             << "\nSeleccione opción (1-5): ";
+             << "\n5. Encontrar n-ésimo primo"
+             << "\n6. Encontrar máximo factor primo"
+             << "\n7. Salir"
+             << "\nSeleccione opción (1-7): ";
 
-        while (!(cin >> opcion) || opcion < 1 || opcion > 5) {
-            cout << "Opción inválida. Ingrese 1-5: ";
+        while (!(cin >> opcion) || opcion < 1 || opcion > 7) {
+            cout << "Opción inválida. Ingrese 1-7: ";
             limpiarBuffer();
         }
         limpiarBuffer();
@@ -193,10 +270,12 @@ void mostrarMenuPrincipal() {
         case 2: sumarTiempos(); break;
         case 3: aproximarConstanteE(); break;
         case 4: calcularSumatoriaMultiplos(); break;
-        case 5: cout << "Saliendo del programa...\n"; break;
+        case 5: encontrarEnesimoPrimo(); break;
+        case 6: encontrarMaxFactorPrimo(); break;
+        case 7: cout << "Saliendo del programa...\n"; break;
         }
 
-    } while (opcion != 5);
+    } while (opcion != 7);
 }
 
 /**
