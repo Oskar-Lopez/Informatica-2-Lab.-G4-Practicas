@@ -1,4 +1,4 @@
-# Informática II - Lab Grupo 4 (2025-1)
+# 🚀Informática II - Laboratorio Grupo 4 (2025-1)
 
 **Universidad de Antioquia**  
 **Ingeniería de Telecomunicaciones**  
