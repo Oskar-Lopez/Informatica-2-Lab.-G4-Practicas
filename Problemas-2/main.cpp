@@ -1,20 +1,50 @@
+/**
+ * @file     Problemas-2.cpp
+ * @brief    Programa con múltiples funcionalidades: conversor monetario, generador de letras,
+ *           comparador de cadenas y conversor de cadena a entero.
+ * @author   [Oscar Lopez Peñata]
+ * @date     [Abril de 2025]
+ * @version  1.0
+ */
+
 #include <iostream>
 
+/**
+ * @brief Función principal que muestra un menú interactivo con diversas opciones.
+ *
+ * El programa ofrece 4 funcionalidades principales:
+ * 1. Conversor de denominaciones monetarias
+ * 2. Generador y contador de letras aleatorias
+ * 3. Comparador de cadenas de caracteres
+ * 4. Convertir cadena numérica a entero
+ *
+ * @return 0 si el programa termina correctamente
+ */
 int main() {
     int opcion;
 
+    // Mostrar menú principal
     std::cout << "=== SELECCION DE PROGRAMAS ===" << std::endl;
     std::cout << "1. Conversor de denominaciones monetarias" << std::endl;
     std::cout << "2. Generador y contador de letras aleatorias" << std::endl;
     std::cout << "3. Comparador de cadenas de caracteres" << std::endl;
-    std::cout << "Ingrese su opcion (1-3): ";
+    std::cout << "4. Convertir cadena numérica a entero" << std::endl;
+    std::cout << "Ingrese su opcion (1-4): ";
     std::cin >> opcion;
 
     switch(opcion) {
     case 1: {
         /*****************************************************
-             * PROGRAMA 1: CONVERSOR DE DENOMINACIONES MONETARIAS *
-             *****************************************************/
+         * PROGRAMA 1: CONVERSOR DE DENOMINACIONES MONETARIAS *
+         *****************************************************/
+        /**
+         * @brief Desglosa una cantidad monetaria en billetes y monedas disponibles.
+         *
+         * - Usa denominaciones predefinidas de mayor a menor valor
+         * - Calcula la cantidad de cada denominación necesaria
+         * - Muestra el resultado del desglose
+         * - Maneja cantidades residuales que no pueden ser cubiertas
+         */
 
         // Denominaciones disponibles (de mayor a menor)
         const int billetesMonedas[] = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50};
@@ -33,10 +63,8 @@ int main() {
         // Proceso de desglose
         for (int i = 0; i < numDenominaciones; i++) {
             if (cantidad >= billetesMonedas[i]) {
-                // Calcula cuántas unidades de esta denominación se necesitan
-                contador[i] = cantidad / billetesMonedas[i];
-                // Actualiza la cantidad restante
-                cantidad %= billetesMonedas[i];
+                contador[i] = cantidad / billetesMonedas[i]; // Calcula unidades necesarias
+                cantidad %= billetesMonedas[i]; // Actualiza cantidad restante
             }
         }
 
@@ -62,8 +90,16 @@ int main() {
 
     case 2: {
         /*****************************************************
-             * PROGRAMA 2: GENERADOR Y CONTADOR DE LETRAS ALEATORIAS *
-             *****************************************************/
+         * PROGRAMA 2: GENERADOR Y CONTADOR DE LETRAS ALEATORIAS *
+         *****************************************************/
+        /**
+         * @brief Genera letras aleatorias y cuenta su frecuencia.
+         *
+         * - Crea un arreglo de 200 letras mayúsculas aleatorias (A-Z)
+         * - Muestra una muestra de 50 caracteres
+         * - Cuenta la frecuencia de cada letra en el arreglo
+         * - Muestra el recuento de letras que aparecen al menos una vez
+         */
 
         // Configuración inicial
         const int tamaño = 200;
@@ -109,8 +145,16 @@ int main() {
 
     case 3: {
         /*****************************************************
-             * PROGRAMA 3: COMPARADOR DE CADENAS DE CARACTERES *
-             *****************************************************/
+         * PROGRAMA 3: COMPARADOR DE CADENAS DE CARACTERES *
+         *****************************************************/
+        /**
+         * @brief Compara dos cadenas de caracteres ingresadas por el usuario.
+         *
+         * - Lee dos cadenas de hasta 100 caracteres
+         * - Compara longitud y contenido carácter por carácter
+         * - Muestra si son iguales o diferentes
+         */
+
         const int tamaño = 100;
         char cadena1[tamaño], cadena2[tamaño];
 
@@ -150,8 +194,60 @@ int main() {
         break;
     }
 
+    case 4: {
+        /*****************************************************
+         * PROGRAMA 4: CONVERTIR CADENA NUMÉRICA A ENTERO *
+         *****************************************************/
+        /**
+         * @brief Convierte una cadena de caracteres numéricos a un valor entero.
+         *
+         * - Maneja números positivos y negativos
+         * - Ignora caracteres no numéricos después del número
+         * - Muestra el resultado de la conversión
+         */
+
+        const int tamaño = 100;
+        char cadenaNum[tamaño];
+
+        std::cin.ignore(); // Limpiar el buffer del teclado
+
+        // Función local para convertir cadena a entero
+        auto cadenaAEntero = [](const char* cadena) -> int {
+            int resultado = 0;
+            int signo = 1;
+            int i = 0;
+
+            // Manejar signo negativo
+            if (cadena[0] == '-') {
+                signo = -1;
+                i = 1;
+            }
+
+            // Convertir cada carácter a dígito y construir el número
+            while (cadena[i] != '\0') {
+                if (cadena[i] >= '0' && cadena[i] <= '9') {
+                    resultado = resultado * 10 + (cadena[i] - '0');
+                    i++;
+                } else {
+                    // Si encuentra un carácter no numérico, salir del bucle
+                    break;
+                }
+            }
+
+            return resultado * signo;
+        };
+
+        std::cout << "\n[CONVERSOR DE CADENA A ENTERO]" << std::endl;
+        std::cout << "Ingrese una cadena numerica: ";
+        std::cin.getline(cadenaNum, tamaño);
+
+        int numero = cadenaAEntero(cadenaNum);
+        std::cout << "El numero convertido es: " << numero << std::endl;
+        break;
+    }
+
     default:
-        std::cout << "\n[!] Opcion no valida. Por favor seleccione 1-3." << std::endl;
+        std::cout << "\n[!] Opcion no valida. Por favor seleccione 1-4." << std::endl;
         break;
     }
 
