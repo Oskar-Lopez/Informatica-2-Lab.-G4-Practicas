@@ -1,5 +1,16 @@
 #include <iostream>
 
+// Declaraciones de funciones (prototipos)
+int numeroAleatorio(int limite);
+bool compararCadenas(const char* cad1, const char* cad2);
+int cadenaAEntero(const char* cadena);
+void convertirEnteroACadena(int numero, char* cadena);
+void convertirMinusculasAMayusculas(char* cadena);
+void eliminarRepetidos(char* cadena);
+void separarNumerosTexto(const char* entrada, char* salidaTexto, char* salidaNumeros);
+int sumarGrupos(const char* cadena, int n, char* desglose);
+int valorRomano(char c);
+
 int main() {
     int opcion;
 
@@ -12,7 +23,10 @@ int main() {
     std::cout << "6. Convertir minúsculas a mayúsculas" << std::endl;
     std::cout << "7. Eliminar caracteres repetidos" << std::endl;
     std::cout << "8. Separar números de texto" << std::endl;
-    std::cout << "Ingrese su opcion (1-8): ";
+    std::cout << "9. Sumar grupos de n cifras" << std::endl;
+    std::cout << "10. Convertir romano a arábigo" << std::endl;
+    std::cout << "0. Salir" << std::endl;
+    std::cout << "Ingrese su opción (0-10): ";
     std::cin >> opcion;
 
     switch(opcion) {
@@ -64,12 +78,6 @@ int main() {
         char letras[tamaño];
         int contador[26] = {0};
 
-        auto numeroAleatorio = [](int limite) {
-            static int semilla = 1;
-            semilla = (semilla + 1) % 100;
-            return semilla % limite;
-        };
-
         std::cout << "\n[GENERADOR DE LETRAS]" << std::endl;
 
         for (int i = 0; i < tamaño; i++) {
@@ -105,19 +113,6 @@ int main() {
 
         std::cin.ignore();
 
-        auto compararCadenas = [](const char* cad1, const char* cad2) -> bool {
-            int i = 0;
-            while (cad1[i] != '\0' && cad2[i] != '\0') i++;
-
-            if (cad1[i] != cad2[i]) return false;
-
-            for (i = 0; cad1[i] != '\0'; i++) {
-                if (cad1[i] != cad2[i]) return false;
-            }
-
-            return true;
-        };
-
         std::cout << "\n[COMPARADOR DE CADENAS]" << std::endl;
         std::cout << "Ingrese la primera cadena: ";
         std::cin.getline(cadena1, tamaño);
@@ -140,28 +135,6 @@ int main() {
 
         std::cin.ignore();
 
-        auto cadenaAEntero = [](const char* cadena) -> int {
-            int resultado = 0;
-            int signo = 1;
-            int i = 0;
-
-            if (cadena[0] == '-') {
-                signo = -1;
-                i = 1;
-            }
-
-            while (cadena[i] != '\0') {
-                if (cadena[i] >= '0' && cadena[i] <= '9') {
-                    resultado = resultado * 10 + (cadena[i] - '0');
-                    i++;
-                } else {
-                    break;
-                }
-            }
-
-            return resultado * signo;
-        };
-
         std::cout << "\n[CONVERSOR DE CADENA A ENTERO]" << std::endl;
         std::cout << "Ingrese una cadena numerica: ";
         std::cin.getline(cadenaNum, MAX_LONGITUD);
@@ -177,33 +150,6 @@ int main() {
          *****************************************************/
         const int MAX_LONGITUD = 20;
         char cadenaResultado[MAX_LONGITUD];
-
-        auto convertirEnteroACadena = [](int numero, char* cadena) {
-            int i = 0;
-            bool esNegativo = false;
-
-            if (numero < 0) {
-                esNegativo = true;
-                numero = -numero;
-            }
-
-            do {
-                cadena[i++] = (numero % 10) + '0';
-                numero /= 10;
-            } while (numero > 0);
-
-            if (esNegativo) {
-                cadena[i++] = '-';
-            }
-
-            cadena[i] = '\0';
-
-            for (int j = 0, k = i - 1; j < k; j++, k--) {
-                char temp = cadena[j];
-                cadena[j] = cadena[k];
-                cadena[k] = temp;
-            }
-        };
 
         std::cout << "\n[CONVERSOR DE ENTERO A CADENA]" << std::endl;
         int numero;
@@ -224,17 +170,6 @@ int main() {
 
         std::cin.ignore();
 
-        auto convertirMinusculasAMayusculas = [](char* cadena) {
-            int i = 0;
-
-            while (cadena[i] != '\0') {
-                if (cadena[i] >= 'a' && cadena[i] <= 'z') {
-                    cadena[i] = cadena[i] - ('a' - 'A');
-                }
-                i++;
-            }
-        };
-
         std::cout << "\n[CONVERSOR DE MINÚSCULAS A MAYÚSCULAS]" << std::endl;
         std::cout << "Ingrese una cadena de caracteres: ";
         std::cin.getline(cadena, MAX_LONGITUD);
@@ -245,85 +180,267 @@ int main() {
     }
 
     case 7: {
-    /*****************************************************
+        /*****************************************************
          * PROGRAMA 7: ELIMINAR CARACTERES REPETIDOS         *
          *****************************************************/
-    const int MAX_LONGITUD = 100;
-    char cadena[MAX_LONGITUD];
+        const int MAX_LONGITUD = 100;
+        char cadena[MAX_LONGITUD];
 
-    std::cin.ignore(); // Limpiar buffer
+        std::cin.ignore();
 
-    auto eliminarRepetidos = [](char* cadena) {
-        int i = 0, j, k;
+        std::cout << "\n[ELIMINADOR DE CARACTERES REPETIDOS]" << std::endl;
+        std::cout << "Ingrese una cadena: ";
+        std::cin.getline(cadena, MAX_LONGITUD);
 
-        while (cadena[i] != '\0') {
-            j = i + 1;
-
-            while (cadena[j] != '\0') {
-                if (cadena[i] == cadena[j]) {
-                    k = j;
-                    while (cadena[k] != '\0') {
-                        cadena[k] = cadena[k + 1];
-                        k++;
-                    }
-                } else {
-                    j++;
-                }
-            }
-            i++;
-        }
-    };
-
-    std::cout << "\n[ELIMINADOR DE CARACTERES REPETIDOS]" << std::endl;
-    std::cout << "Ingrese una cadena: ";
-    std::cin.getline(cadena, MAX_LONGITUD);
-
-    eliminarRepetidos(cadena);
-    std::cout << "Cadena sin repetidos: " << cadena << std::endl;
-    break;
-}
+        eliminarRepetidos(cadena);
+        std::cout << "Cadena sin repetidos: " << cadena << std::endl;
+        break;
+    }
 
     case 8: {
-    /*****************************************************
+        /*****************************************************
          * PROGRAMA 8: SEPARAR NÚMEROS DE TEXTO              *
          *****************************************************/
-    const int MAX_LONGITUD = 100;
-    char cadena[MAX_LONGITUD];
-    char texto[MAX_LONGITUD];
-    char numeros[MAX_LONGITUD];
+        const int MAX_LONGITUD = 100;
+        char cadena[MAX_LONGITUD];
+        char texto[MAX_LONGITUD];
+        char numeros[MAX_LONGITUD];
 
-    std::cin.ignore();
+        std::cin.ignore();
 
-    auto separarNumerosTexto = [](const char* entrada, char* salidaTexto, char* salidaNumeros) {
-        int idxTexto = 0;
-        int idxNumeros = 0;
+        std::cout << "\n[SEPARADOR DE NÚMEROS Y TEXTO]" << std::endl;
+        std::cout << "Ingrese una cadena: ";
+        std::cin.getline(cadena, MAX_LONGITUD);
 
-        for (int i = 0; entrada[i] != '\0'; i++) {
-            if (entrada[i] >= '0' && entrada[i] <= '9') {
-                salidaNumeros[idxNumeros++] = entrada[i];
+        separarNumerosTexto(cadena, texto, numeros);
+        std::cout << "Original: " << cadena << std::endl;
+        std::cout << "Texto: " << texto << ". Números: " << numeros << std::endl;
+        break;
+    }
+
+    case 9: {
+        /*****************************************************
+         * PROGRAMA 9: SUMAR GRUPOS DE N CIFRAS              *
+         *****************************************************/
+        const int MAX_LONGITUD = 100;
+        const int MAX_DESGLOSE = 200;
+        char cadena[MAX_LONGITUD];
+        char desglose[MAX_DESGLOSE] = {0};
+        int n;
+
+        std::cin.ignore();
+
+        std::cout << "\n[SUMAR GRUPOS DE N CIFRAS]" << std::endl;
+        std::cout << "Ingrese el valor de n: ";
+        std::cin >> n;
+        std::cin.ignore();
+
+        std::cout << "Ingrese cadena numérica: ";
+        std::cin.getline(cadena, MAX_LONGITUD);
+
+        int resultado = sumarGrupos(cadena, n, desglose);
+        std::cout << "Original: " << cadena << "." << std::endl;
+        std::cout << "Suma: " << desglose << "=" << resultado << "." << std::endl;
+        break;
+    }
+
+    case 10: {
+        /*****************************************************
+         * PROGRAMA 10: CONVERSOR ROMANO A ARÁBIGO           *
+         *****************************************************/
+        const int MAX_ROMANO = 100;
+        char romano[MAX_ROMANO];
+
+        std::cin.ignore();
+
+        std::cout << "\n[CONVERSOR ROMANO A ARÁBIGO]" << std::endl;
+        std::cout << "Ingrese número romano: ";
+        std::cin.getline(romano, MAX_ROMANO);
+
+        // Procesamiento directo
+        int total = 0;
+        for(int i = 0; romano[i] != '\0'; i++) {
+            int actual = valorRomano(romano[i]);
+            int siguiente = valorRomano(romano[i+1]);
+
+            if (actual >= siguiente) {
+                total += actual;
             } else {
-                salidaTexto[idxTexto++] = entrada[i];
+                total -= actual;
             }
         }
 
-        salidaTexto[idxTexto] = '\0';
-        salidaNumeros[idxNumeros] = '\0';
-    };
+        std::cout << "El número ingresado fue: " << romano << std::endl;
+        std::cout << "Que corresponde a: " << total << std::endl;
+        break;
+    }
 
-    std::cout << "\n[SEPARADOR DE NÚMEROS Y TEXTO]" << std::endl;
-    std::cout << "Ingrese una cadena: ";
-    std::cin.getline(cadena, MAX_LONGITUD);
+    default:
+        std::cout << "\n[!] Opción no válida" << std::endl;
+    }
 
-    separarNumerosTexto(cadena, texto, numeros);
-    std::cout << "Original: " << cadena << std::endl;
-    std::cout << "Texto: " << texto << ". Números: " << numeros << std::endl;
-    break;
+    return 0;
 }
 
-default:
-    std::cout << "\n[!] Opcion no valida. Por favor seleccione 1-8." << std::endl;
-    break;
+// Implementaciones de funciones
+int numeroAleatorio(int limite) {
+    static int semilla = 1;
+    semilla = (semilla + 1) % 100;
+    return semilla % limite;
 }
 
-return 0;
+bool compararCadenas(const char* cad1, const char* cad2) {
+    int i = 0;
+    while (cad1[i] != '\0' && cad2[i] != '\0') i++;
+
+    if (cad1[i] != cad2[i]) return false;
+
+    for (i = 0; cad1[i] != '\0'; i++) {
+        if (cad1[i] != cad2[i]) return false;
+    }
+
+    return true;
+}
+
+int cadenaAEntero(const char* cadena) {
+    int resultado = 0;
+    int signo = 1;
+    int i = 0;
+
+    if (cadena[0] == '-') {
+        signo = -1;
+        i = 1;
+    }
+
+    while (cadena[i] != '\0') {
+        if (cadena[i] >= '0' && cadena[i] <= '9') {
+            resultado = resultado * 10 + (cadena[i] - '0');
+            i++;
+        } else {
+            break;
+        }
+    }
+
+    return resultado * signo;
+}
+
+void convertirEnteroACadena(int numero, char* cadena) {
+    int i = 0;
+    bool esNegativo = false;
+
+    if (numero < 0) {
+        esNegativo = true;
+        numero = -numero;
+    }
+
+    do {
+        cadena[i++] = (numero % 10) + '0';
+        numero /= 10;
+    } while (numero > 0);
+
+    if (esNegativo) {
+        cadena[i++] = '-';
+    }
+
+    cadena[i] = '\0';
+
+    for (int j = 0, k = i - 1; j < k; j++, k--) {
+        char temp = cadena[j];
+        cadena[j] = cadena[k];
+        cadena[k] = temp;
+    }
+}
+
+void convertirMinusculasAMayusculas(char* cadena) {
+    int i = 0;
+
+    while (cadena[i] != '\0') {
+        if (cadena[i] >= 'a' && cadena[i] <= 'z') {
+            cadena[i] = cadena[i] - ('a' - 'A');
+        }
+        i++;
+    }
+}
+
+void eliminarRepetidos(char* cadena) {
+    int i = 0, j, k;
+
+    while (cadena[i] != '\0') {
+        j = i + 1;
+
+        while (cadena[j] != '\0') {
+            if (cadena[i] == cadena[j]) {
+                k = j;
+                while (cadena[k] != '\0') {
+                    cadena[k] = cadena[k + 1];
+                    k++;
+                }
+            } else {
+                j++;
+            }
+        }
+        i++;
+    }
+}
+
+void separarNumerosTexto(const char* entrada, char* salidaTexto, char* salidaNumeros) {
+    int idxTexto = 0;
+    int idxNumeros = 0;
+
+    for (int i = 0; entrada[i] != '\0'; i++) {
+        if (entrada[i] >= '0' && entrada[i] <= '9') {
+            salidaNumeros[idxNumeros++] = entrada[i];
+        } else {
+            salidaTexto[idxTexto++] = entrada[i];
+        }
+    }
+
+    salidaTexto[idxTexto] = '\0';
+    salidaNumeros[idxNumeros] = '\0';
+}
+
+int sumarGrupos(const char* cadena, int n, char* desglose) {
+    int suma_total = 0;
+    int longitud = 0;
+    int digitos = 0;
+
+    // Calcular longitud
+    while (cadena[longitud] != '\0') longitud++;
+
+    // Calcular ceros a agregar
+    int ceros = (n - (longitud % n)) % n;
+    char* d = desglose;
+    for (int i = 0; i < ceros; i++) {
+        *d++ = '0';
+        digitos++;
+    }
+
+    // Procesar cadena
+    int num_actual = 0;
+    for (int i = 0; cadena[i] != '\0'; i++) {
+        num_actual = num_actual * 10 + (cadena[i] - '0');
+        *d++ = cadena[i];
+        digitos++;
+
+        if (digitos % n == 0) {
+            suma_total += num_actual;
+            num_actual = 0;
+            if (cadena[i+1] != '\0') *d++ = '+';
+        }
+    }
+    *d = '\0';
+    return suma_total;
+}
+
+int valorRomano(char c) {
+    switch(c) {
+    case 'M': return 1000;
+    case 'D': return 500;
+    case 'C': return 100;
+    case 'L': return 50;
+    case 'X': return 10;
+    case 'V': return 5;
+    case 'I': return 1;
+    default: return 0;
+    }
 }
