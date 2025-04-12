@@ -10,7 +10,9 @@ int main() {
     std::cout << "4. Convertir cadena numérica a entero" << std::endl;
     std::cout << "5. Convertir entero a cadena numérica" << std::endl;
     std::cout << "6. Convertir minúsculas a mayúsculas" << std::endl;
-    std::cout << "Ingrese su opcion (1-6): ";
+    std::cout << "7. Eliminar caracteres repetidos" << std::endl;
+    std::cout << "8. Separar números de texto" << std::endl;
+    std::cout << "Ingrese su opcion (1-8): ";
     std::cin >> opcion;
 
     switch(opcion) {
@@ -242,10 +244,86 @@ int main() {
         break;
     }
 
-    default:
-        std::cout << "\n[!] Opcion no valida. Por favor seleccione 1-6." << std::endl;
-        break;
-    }
+    case 7: {
+    /*****************************************************
+         * PROGRAMA 7: ELIMINAR CARACTERES REPETIDOS         *
+         *****************************************************/
+    const int MAX_LONGITUD = 100;
+    char cadena[MAX_LONGITUD];
 
-    return 0;
+    std::cin.ignore(); // Limpiar buffer
+
+    auto eliminarRepetidos = [](char* cadena) {
+        int i = 0, j, k;
+
+        while (cadena[i] != '\0') {
+            j = i + 1;
+
+            while (cadena[j] != '\0') {
+                if (cadena[i] == cadena[j]) {
+                    k = j;
+                    while (cadena[k] != '\0') {
+                        cadena[k] = cadena[k + 1];
+                        k++;
+                    }
+                } else {
+                    j++;
+                }
+            }
+            i++;
+        }
+    };
+
+    std::cout << "\n[ELIMINADOR DE CARACTERES REPETIDOS]" << std::endl;
+    std::cout << "Ingrese una cadena: ";
+    std::cin.getline(cadena, MAX_LONGITUD);
+
+    eliminarRepetidos(cadena);
+    std::cout << "Cadena sin repetidos: " << cadena << std::endl;
+    break;
+}
+
+    case 8: {
+    /*****************************************************
+         * PROGRAMA 8: SEPARAR NÚMEROS DE TEXTO              *
+         *****************************************************/
+    const int MAX_LONGITUD = 100;
+    char cadena[MAX_LONGITUD];
+    char texto[MAX_LONGITUD];
+    char numeros[MAX_LONGITUD];
+
+    std::cin.ignore();
+
+    auto separarNumerosTexto = [](const char* entrada, char* salidaTexto, char* salidaNumeros) {
+        int idxTexto = 0;
+        int idxNumeros = 0;
+
+        for (int i = 0; entrada[i] != '\0'; i++) {
+            if (entrada[i] >= '0' && entrada[i] <= '9') {
+                salidaNumeros[idxNumeros++] = entrada[i];
+            } else {
+                salidaTexto[idxTexto++] = entrada[i];
+            }
+        }
+
+        salidaTexto[idxTexto] = '\0';
+        salidaNumeros[idxNumeros] = '\0';
+    };
+
+    std::cout << "\n[SEPARADOR DE NÚMEROS Y TEXTO]" << std::endl;
+    std::cout << "Ingrese una cadena: ";
+    std::cin.getline(cadena, MAX_LONGITUD);
+
+    separarNumerosTexto(cadena, texto, numeros);
+    std::cout << "Original: " << cadena << std::endl;
+    std::cout << "Texto: " << texto << ". Números: " << numeros << std::endl;
+    break;
+}
+
+default:
+    std::cout << "\n[!] Opcion no valida. Por favor seleccione 1-8." << std::endl;
+    break;
+}
+
+return 0;
 }
