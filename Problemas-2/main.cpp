@@ -15,6 +15,12 @@ bool salaCineLlena(const char sala[][20], int filas, int asientosPorFila);
 void reservarAsientoCine(char sala[][20], char fila, int asiento);
 void cancelarReservaCine(char sala[][20], char fila, int asiento);
 bool esCuadradoMagico(const int matriz[][10], int n);
+bool esEstrella(const int matriz[][8], int i, int j);
+int contarEstrellas(const int matriz[][8], int filas, int columnas);
+void imprimirMatriz(int matriz[5][5]);
+void rotar90(int original[5][5], int rotada[5][5]);
+void rotar180(int original[5][5], int rotada[5][5]);
+void rotar270(int original[5][5], int rotada[5][5]);
 
 int main() {
     int opcion;
@@ -32,8 +38,10 @@ int main() {
     std::cout << "10. Convertir romano a arábigo" << std::endl;
     std::cout << "11. Sistema de reservas de cine" << std::endl;
     std::cout << "12. Verificador de cuadrado mágico" << std::endl;
+    std::cout << "13. Detector de estrellas en galaxia" << std::endl;
+    std::cout << "14. Rotación de matriz 5x5" << std::endl;
     std::cout << "0. Salir" << std::endl;
-    std::cout << "Ingrese su opción (0-12): ";
+    std::cout << "Ingrese su opción (0-14): ";
     std::cin >> opcion;
 
     switch(opcion) {
@@ -367,8 +375,8 @@ int main() {
 
     case 12: {
         /*****************************************************
-             * PROGRAMA 12: VERIFICADOR DE CUADRADO MÁGICO       *
-             *****************************************************/
+             * PROGRAMA 12: VERIFICADOR DE CUADRADO MÁGICO  *
+        *****************************************************/
         const int MAX_DIM = 10;
         int matriz[MAX_DIM][MAX_DIM];
         int n;
@@ -408,21 +416,96 @@ int main() {
         break;
     }
 
-    default:
-        std::cout << "\n[!] Opción no válida" << std::endl;
+    case 13: {
+        /*****************************************************
+            * PROGRAMA 13: DETECTOR DE ESTRELLAS EN GALAXIA *
+        *****************************************************/
+        const int filas = 6;
+        const int columnas = 8;
+        int matriz[filas][columnas] = {
+            {0, 3, 4, 0, 0, 0, 6, 8},
+            {5, 13, 6, 0, 0, 0, 2, 3},
+            {2, 6, 2, 7, 3, 0, 10, 0},
+            {0, 0, 4, 15, 4, 1, 6, 0},
+            {0, 0, 7, 12, 6, 9, 10, 4},
+            {5, 0, 6, 10, 6, 4, 8, 0}
+        };
+
+        std::cout << "\n[DETECTOR DE ESTRELLAS EN GALAXIA NGC 1300]" << std::endl;
+
+        // Mostrar la matriz de la galaxia
+        std::cout << "\nMatriz de luminosidad:" << std::endl;
+        for (int i = 0; i < filas; ++i) {
+            for (int j = 0; j < columnas; ++j) {
+                std::cout << matriz[i][j] << "\t";
+            }
+            std::cout << std::endl;
+        }
+
+        // Contar estrellas
+        int totalEstrellas = contarEstrellas(matriz, filas, columnas);
+
+        std::cout << "\nNumero de estrellas detectadas: " << totalEstrellas << std::endl;
+        std::cout << "(Ignorando bordes de la imagen)" << std::endl;
+        break;
+    }
+
+    case 14: {
+        // Declaramos la matriz 5x5 y la llenamos con los números del 1 al 25
+        int matriz[5][5] = {
+            { 1,  2,  3,  4,  5},
+            { 6,  7,  8,  9, 10},
+            {11, 12, 13, 14, 15},
+            {16, 17, 18, 19, 20},
+            {21, 22, 23, 24, 25}
+        };
+
+        // Matrices para almacenar las rotaciones
+        int rotada90[5][5], rotada180[5][5], rotada270[5][5];
+
+        // Imprimir la matriz original
+        std::cout << "\nMatriz original:" << std::endl;
+        imprimirMatriz(matriz);
+
+        // Rotar la matriz 90 grados
+        rotar90(matriz, rotada90);
+        std::cout << "Matriz rotada 90 grados:" << std::endl;
+        imprimirMatriz(rotada90);
+
+        // Rotar la matriz 180 grados
+        rotar180(matriz, rotada180);
+        std::cout << "Matriz rotada 180 grados:" << std::endl;
+        imprimirMatriz(rotada180);
+
+        // Rotar la matriz 270 grados
+        rotar270(matriz, rotada270);
+        std::cout << "Matriz rotada 270 grados:" << std::endl;
+        imprimirMatriz(rotada270);
+        break;
+    }
+
+    case 0: {
+        std::cout << "Saliendo del programa..." << std::endl;
+        break;
+    }
+        default: {
+            std::cout << "Opción no válida" << std::endl;
+        }
     }
 
     return 0;
 }
 
-
 // Implementaciones de funciones
+
+// Case 2: Generador y contador de letras aleatorias
 int numeroAleatorio(int limite) {
     static int semilla = 1;
     semilla = (semilla + 1) % 100;
     return semilla % limite;
 }
 
+// Case 3: Comparador de cadenas de caracteres
 bool compararCadenas(const char* cad1, const char* cad2) {
     int i = 0;
     while (cad1[i] != '\0' && cad2[i] != '\0') i++;
@@ -436,6 +519,7 @@ bool compararCadenas(const char* cad1, const char* cad2) {
     return true;
 }
 
+// Case 4: Convertir cadena numérica a entero
 int cadenaAEntero(const char* cadena) {
     int resultado = 0;
     int signo = 1;
@@ -458,6 +542,7 @@ int cadenaAEntero(const char* cadena) {
     return resultado * signo;
 }
 
+// Case 5: Convertir entero a cadena numérica
 void convertirEnteroACadena(int numero, char* cadena) {
     int i = 0;
     bool esNegativo = false;
@@ -485,6 +570,7 @@ void convertirEnteroACadena(int numero, char* cadena) {
     }
 }
 
+// Case 6: Convertir minúsculas a mayúsculas
 void convertirMinusculasAMayusculas(char* cadena) {
     int i = 0;
 
@@ -496,6 +582,7 @@ void convertirMinusculasAMayusculas(char* cadena) {
     }
 }
 
+// Case 7: Eliminar caracteres repetidos
 void eliminarRepetidos(char* cadena) {
     int i = 0, j, k;
 
@@ -517,6 +604,7 @@ void eliminarRepetidos(char* cadena) {
     }
 }
 
+// Case 8: Separar números de texto
 void separarNumerosTexto(const char* entrada, char* salidaTexto, char* salidaNumeros) {
     int idxTexto = 0;
     int idxNumeros = 0;
@@ -533,15 +621,14 @@ void separarNumerosTexto(const char* entrada, char* salidaTexto, char* salidaNum
     salidaNumeros[idxNumeros] = '\0';
 }
 
+// Case 9: Sumar grupos de n cifras
 int sumarGrupos(const char* cadena, int n, char* desglose) {
     int suma_total = 0;
     int longitud = 0;
     int digitos = 0;
 
-    // Calcular longitud
     while (cadena[longitud] != '\0') longitud++;
 
-    // Calcular ceros a agregar
     int ceros = (n - (longitud % n)) % n;
     char* d = desglose;
     for (int i = 0; i < ceros; i++) {
@@ -549,7 +636,6 @@ int sumarGrupos(const char* cadena, int n, char* desglose) {
         digitos++;
     }
 
-    // Procesar cadena
     int num_actual = 0;
     for (int i = 0; cadena[i] != '\0'; i++) {
         num_actual = num_actual * 10 + (cadena[i] - '0');
@@ -566,6 +652,7 @@ int sumarGrupos(const char* cadena, int n, char* desglose) {
     return suma_total;
 }
 
+// Case 10: Convertir romano a arábigo
 int valorRomano(char c) {
     switch(c) {
     case 'M': return 1000;
@@ -579,8 +666,8 @@ int valorRomano(char c) {
     }
 }
 
-// Implementaciones de las funciones para el cine
-    void mostrarSalaCine(const char sala[][20], int filas, int asientosPorFila) {
+// Case 11: Sistema de reservas de cine
+void mostrarSalaCine(const char sala[][20], int filas, int asientosPorFila) {
     std::cout << "  ";
     for (int i = 1; i <= asientosPorFila; ++i) {
         if (i < 10) std::cout << " ";
@@ -628,17 +715,15 @@ void cancelarReservaCine(char sala[][20], char fila, int asiento) {
     }
 }
 
-//Implementación de las funciones para verificar cuadrado mágico
+// Case 12: Verificador de cuadrado mágico
 bool esCuadradoMagico(const int matriz[][10], int n) {
     int suma_base = 0;
     int suma_diag1 = 0, suma_diag2 = 0;
 
-    // Calcular suma de referencia (primera fila)
     for (int j = 0; j < n; j++) {
         suma_base += matriz[0][j];
     }
 
-    // Verificar diagonales
     for (int i = 0; i < n; i++) {
         suma_diag1 += matriz[i][i];
         suma_diag2 += matriz[i][n-1-i];
@@ -648,7 +733,6 @@ bool esCuadradoMagico(const int matriz[][10], int n) {
         return false;
     }
 
-    // Verificar filas y columnas
     for (int i = 0; i < n; i++) {
         int suma_fila = 0;
         int suma_col = 0;
@@ -664,4 +748,60 @@ bool esCuadradoMagico(const int matriz[][10], int n) {
     }
 
     return true;
+}
+
+// Case 13: Detector de estrellas en galaxia
+bool esEstrella(const int matriz[][8], int i, int j) {
+    float promedio = (matriz[i][j] + matriz[i][j-1] + matriz[i][j+1] +
+                      matriz[i-1][j] + matriz[i+1][j]) / 5.0f;
+    return promedio > 6.0f;
+}
+
+int contarEstrellas(const int matriz[][8], int filas, int columnas) {
+    int estrellas = 0;
+
+    for (int i = 1; i < filas - 1; ++i) {
+        for (int j = 1; j < columnas - 1; ++j) {
+            if (esEstrella(matriz, i, j)) {
+                estrellas++;
+            }
+        }
+    }
+
+    return estrellas;
+}
+
+// Case 14: Rotación de matriz 5x5
+void imprimirMatriz(int matriz[5][5]) {
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            std::cout << matriz[i][j] << "\t";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+void rotar90(int original[5][5], int rotada[5][5]) {
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            rotada[j][5 - i - 1] = original[i][j];
+        }
+    }
+}
+
+void rotar180(int original[5][5], int rotada[5][5]) {
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            rotada[5 - i - 1][5 - j - 1] = original[i][j];
+        }
+    }
+}
+
+void rotar270(int original[5][5], int rotada[5][5]) {
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            rotada[5 - j - 1][i] = original[i][j];
+        }
+    }
 }
