@@ -10,6 +10,11 @@ void eliminarRepetidos(char* cadena);
 void separarNumerosTexto(const char* entrada, char* salidaTexto, char* salidaNumeros);
 int sumarGrupos(const char* cadena, int n, char* desglose);
 int valorRomano(char c);
+void mostrarSalaCine(const char sala[][20], int filas, int asientosPorFila);
+bool salaCineLlena(const char sala[][20], int filas, int asientosPorFila);
+void reservarAsientoCine(char sala[][20], char fila, int asiento);
+void cancelarReservaCine(char sala[][20], char fila, int asiento);
+bool esCuadradoMagico(const int matriz[][10], int n);
 
 int main() {
     int opcion;
@@ -25,8 +30,10 @@ int main() {
     std::cout << "8. Separar números de texto" << std::endl;
     std::cout << "9. Sumar grupos de n cifras" << std::endl;
     std::cout << "10. Convertir romano a arábigo" << std::endl;
+    std::cout << "11. Sistema de reservas de cine" << std::endl;
+    std::cout << "12. Verificador de cuadrado mágico" << std::endl;
     std::cout << "0. Salir" << std::endl;
-    std::cout << "Ingrese su opción (0-10): ";
+    std::cout << "Ingrese su opción (0-12): ";
     std::cin >> opcion;
 
     switch(opcion) {
@@ -275,12 +282,139 @@ int main() {
         break;
     }
 
+    case 11: {
+        /*****************************************************
+         * PROGRAMA 11: SISTEMA DE RESERVAS DE CINE          *
+         *****************************************************/
+        const int FILAS_CINE = 15;
+        const int ASIENTOS_POR_FILA = 20;
+        char salaCine[FILAS_CINE][ASIENTOS_POR_FILA];
+        char opcionCine;
+        char fila;
+        int asiento;
+
+        // Inicializar todos los asientos como disponibles
+        for (int i = 0; i < FILAS_CINE; i++) {
+            for (int j = 0; j < ASIENTOS_POR_FILA; j++) {
+                salaCine[i][j] = '-';
+            }
+        }
+
+        do {
+            std::cout << "\n--- Gestion de Reservas de Cine ---\n";
+            mostrarSalaCine(salaCine, FILAS_CINE, ASIENTOS_POR_FILA);
+
+            if (salaCineLlena(salaCine, FILAS_CINE, ASIENTOS_POR_FILA)) {
+                std::cout << "La sala esta completamente llena.\n";
+                break;
+            }
+
+            std::cout << "Seleccione una opcion:\n";
+            std::cout << "1. Reservar asiento\n";
+            std::cout << "2. Cancelar reserva\n";
+            std::cout << "3. Salir\n";
+            std::cin >> opcionCine;
+
+            switch (opcionCine) {
+            case '1': {
+                // Validar fila
+                do {
+                    std::cout << "Ingrese la fila (A-O): ";
+                    std::cin >> fila;
+                    if (fila >= 'a' && fila <= 'o') {
+                        fila = fila - 'a' + 'A'; // Convertir a mayúscula
+                    }
+                } while (fila < 'A' || fila > 'O');
+
+                // Validar asiento
+                do {
+                    std::cout << "Ingrese el numero del asiento (1-20): ";
+                    std::cin >> asiento;
+                } while (asiento < 1 || asiento > 20);
+
+                reservarAsientoCine(salaCine, fila, asiento);
+                break;
+            }
+            case '2': {
+                // Validar fila
+                do {
+                    std::cout << "Ingrese la fila (A-O): ";
+                    std::cin >> fila;
+                    if (fila >= 'a' && fila <= 'o') {
+                        fila = fila - 'a' + 'A'; // Convertir a mayúscula
+                    }
+                } while (fila < 'A' || fila > 'O');
+
+                // Validar asiento
+                do {
+                    std::cout << "Ingrese el numero del asiento (1-20): ";
+                    std::cin >> asiento;
+                } while (asiento < 1 || asiento > 20);
+
+                cancelarReservaCine(salaCine, fila, asiento);
+                break;
+            }
+            case '3':
+                std::cout << "Saliendo del sistema de reservas...\n";
+                break;
+            default:
+                std::cout << "Opcion invalida.\n";
+                break;
+            }
+        } while (opcionCine != '3');
+        break;
+    }
+
+    case 12: {
+        /*****************************************************
+             * PROGRAMA 12: VERIFICADOR DE CUADRADO MÁGICO       *
+             *****************************************************/
+        const int MAX_DIM = 10;
+        int matriz[MAX_DIM][MAX_DIM];
+        int n;
+
+        std::cout << "\n[VERIFICADOR DE CUADRADO MAGICO]" << std::endl;
+
+        // Solicitar dimensión con validación
+        do {
+            std::cout << "Ingrese la dimension de la matriz cuadrada (2-" << MAX_DIM << "): ";
+            std::cin >> n;
+        } while (n < 2 || n > MAX_DIM);
+
+        // Ingresar elementos
+        std::cout << "Ingrese los elementos de la matriz:" << std::endl;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                std::cout << "Elemento [" << i+1 << "][" << j+1 << "]: ";
+                std::cin >> matriz[i][j];
+            }
+        }
+
+        // Mostrar matriz
+        std::cout << "\nMatriz ingresada:" << std::endl;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                std::cout << matriz[i][j] << "\t";
+            }
+            std::cout << std::endl;
+        }
+
+        // Verificar y mostrar resultado
+        if (esCuadradoMagico(matriz, n)) {
+            std::cout << "\nLa matriz SI es un cuadrado magico." << std::endl;
+        } else {
+            std::cout << "\nLa matriz NO es un cuadrado magico." << std::endl;
+        }
+        break;
+    }
+
     default:
         std::cout << "\n[!] Opción no válida" << std::endl;
     }
 
     return 0;
 }
+
 
 // Implementaciones de funciones
 int numeroAleatorio(int limite) {
@@ -443,4 +577,91 @@ int valorRomano(char c) {
     case 'I': return 1;
     default: return 0;
     }
+}
+
+// Implementaciones de las funciones para el cine
+    void mostrarSalaCine(const char sala[][20], int filas, int asientosPorFila) {
+    std::cout << "  ";
+    for (int i = 1; i <= asientosPorFila; ++i) {
+        if (i < 10) std::cout << " ";
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    for (int i = 0; i < filas; ++i) {
+        std::cout << char('A' + i) << " ";
+        for (int j = 0; j < asientosPorFila; ++j) {
+            std::cout << sala[i][j] << "  ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+bool salaCineLlena(const char sala[][20], int filas, int asientosPorFila) {
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < asientosPorFila; j++) {
+            if (sala[i][j] == '-') {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void reservarAsientoCine(char sala[][20], char fila, int asiento) {
+    int filaIndex = fila - 'A';
+    if (sala[filaIndex][asiento - 1] == '-') {
+        sala[filaIndex][asiento - 1] = '+';
+        std::cout << "Asiento reservado exitosamente.\n";
+    } else {
+        std::cout << "El asiento ya esta reservado.\n";
+    }
+}
+
+void cancelarReservaCine(char sala[][20], char fila, int asiento) {
+    int filaIndex = fila - 'A';
+    if (sala[filaIndex][asiento - 1] == '+') {
+        sala[filaIndex][asiento - 1] = '-';
+        std::cout << "Reserva cancelada exitosamente.\n";
+    } else {
+        std::cout << "El asiento ya esta disponible.\n";
+    }
+}
+
+//Implementación de las funciones para verificar cuadrado mágico
+bool esCuadradoMagico(const int matriz[][10], int n) {
+    int suma_base = 0;
+    int suma_diag1 = 0, suma_diag2 = 0;
+
+    // Calcular suma de referencia (primera fila)
+    for (int j = 0; j < n; j++) {
+        suma_base += matriz[0][j];
+    }
+
+    // Verificar diagonales
+    for (int i = 0; i < n; i++) {
+        suma_diag1 += matriz[i][i];
+        suma_diag2 += matriz[i][n-1-i];
+    }
+
+    if (suma_diag1 != suma_base || suma_diag2 != suma_base) {
+        return false;
+    }
+
+    // Verificar filas y columnas
+    for (int i = 0; i < n; i++) {
+        int suma_fila = 0;
+        int suma_col = 0;
+
+        for (int j = 0; j < n; j++) {
+            suma_fila += matriz[i][j];
+            suma_col += matriz[j][i];
+        }
+
+        if (suma_fila != suma_base || suma_col != suma_base) {
+            return false;
+        }
+    }
+
+    return true;
 }
