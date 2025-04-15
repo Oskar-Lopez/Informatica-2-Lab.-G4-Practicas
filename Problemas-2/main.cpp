@@ -25,6 +25,13 @@ void interseccionRectangulos(const int A[4], const int B[4], int C[4]);
 void leerRectangulo(const char* mensaje, int rectangulo[4]);
 unsigned long long calcularCaminos(int n);
 void mostrarCaminosCuadricula();
+int calcularSumaDivisores(int num);
+int encontrarSumaAmigables(int limite);
+void ejecutarNumerosAmigables();
+int calcularFactorial(int numero);
+void encontrarPermutacion(int numero);
+void ejecutarPermutacionLexicografica();
+
 
 int main() {
     int opcion;
@@ -46,8 +53,10 @@ int main() {
     std::cout << "14. Rotación de matriz 5x5" << std::endl;
     std::cout << "15. Intersección de rectángulos" << std::endl;
     std::cout << "16. Caminos en una cuadrícula n×n" << std::endl;
+    std::cout << "17. Suma de números amigables" << std::endl;
+    std::cout << "18. Permutación lexicográfica" << std::endl;
     std::cout << "0. Salir" << std::endl;
-    std::cout << "Ingrese su opción (0-16): ";
+    std::cout << "Ingrese su opción (0-18): ";
     std::cin >> opcion;
 
     switch(opcion) {
@@ -529,6 +538,23 @@ int main() {
         break;
     }
 
+    case 17: {
+        /*****************************************************
+            * PROGRAMA 17: SUMA DE NÚMEROS AMIGABLES *
+        *****************************************************/
+        ejecutarNumerosAmigables();
+        break;
+    }
+
+    case 18: {
+        /*****************************************************
+            * PROGRAMA 17: PERMUTACIÓNLEXICOGRÁFICA *
+        *****************************************************/
+
+        ejecutarPermutacionLexicografica();
+        break;
+    }
+
     case 0: {
         std::cout << "Saliendo del programa..." << std::endl;
         break;
@@ -921,3 +947,115 @@ void mostrarCaminosCuadricula() {
               << " puntos hay " << caminos << " caminos." << std::endl;
 }
 
+// Case 17: Números amigables
+int calcularSumaDivisores(int num) {
+    if (num == 1) return 0;
+
+    int suma = 1; // 1 es divisor universal
+
+    // Optimización: buscar divisores hasta la raíz cuadrada
+    for (int i = 2; i * i <= num; ++i) {
+        if (num % i == 0) {
+            suma += i;
+            int complemento = num / i;
+            if (complemento != i) suma += complemento;
+        }
+    }
+    return suma;
+}
+
+int encontrarSumaAmigables(int limite) {
+    int sumaTotal = 0;
+    bool* procesados = new bool[limite + 1](); // Inicializado a false
+
+    for (int a = 2; a < limite; ++a) {
+        if (!procesados[a]) {
+            int b = calcularSumaDivisores(a);
+
+            // Verificar condiciones para números amigables
+            if (b != a && b < limite && calcularSumaDivisores(b) == a) {
+                std::cout << "Par amigable encontrado: " << a << " y " << b << std::endl;
+                sumaTotal += a + b;
+                procesados[a] = procesados[b] = true; // Marcamos ambos como procesados
+            }
+        }
+    }
+
+    delete[] procesados;
+    return sumaTotal;
+}
+
+void ejecutarNumerosAmigables() {
+    int limite;
+
+    std::cout << "\n[NUMEROS AMIGABLES]" << std::endl;
+    std::cout << "Ingrese el numero limite (>= 2): ";
+    std::cin >> limite;
+
+    if (limite < 2) {
+        std::cout << "Error: El numero debe ser mayor o igual a 2" << std::endl;
+        return;
+    }
+
+    int resultado = encontrarSumaAmigables(limite);
+
+    // Mostrar resultado en el formato exacto requerido
+    std::cout << "El resultado de la suma es: " << resultado << std::endl;
+}
+
+// Case 18: Permutación lexicográfica
+int calcularFactorial(int numero) {
+    int resultado = 1;
+    for (int i = 2; i <= numero; i++) {
+        resultado *= i;
+    }
+    return resultado;
+}
+
+void encontrarPermutacion(int numero) {
+    int digitos[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    int factoriales[] = {
+        calcularFactorial(9),
+        calcularFactorial(8),
+        calcularFactorial(7),
+        calcularFactorial(6),
+        calcularFactorial(5),
+        calcularFactorial(4),
+        calcularFactorial(3),
+        calcularFactorial(2),
+        calcularFactorial(1),
+        calcularFactorial(0)
+    };
+    int indice = numero - 1; // Convertir a 0-based
+
+    std::cout << "Permutación #" << numero << ": ";
+
+    for (int i = 0; i < 10; i++) {
+        int valorFactorial = factoriales[i];
+        int indiceDigito = indice / valorFactorial;
+        indice %= valorFactorial;
+
+        std::cout << digitos[indiceDigito];
+
+        // Eliminar el dígito usado del arreglo
+        for (int j = indiceDigito + 1; j < 10; j++) {
+            digitos[j - 1] = digitos[j];
+        }
+    }
+    std::cout << std::endl;
+}
+
+void ejecutarPermutacionLexicografica() {
+    int numero;
+
+    std::cout << "\n[PERMUTACION LEXICOGRAFICA]" << std::endl;
+    std::cout << "Ingrese el número de permutación deseada (1-3628800): ";
+    std::cin >> numero;
+
+    if (numero < 1 || numero > 3628800) {
+        std::cout << "Error: El número debe estar entre 1 y 3,628,800" << std::endl;
+        return;
+    }
+
+    encontrarPermutacion(numero);
+}
