@@ -21,6 +21,10 @@ void imprimirMatriz(int matriz[5][5]);
 void rotar90(int original[5][5], int rotada[5][5]);
 void rotar180(int original[5][5], int rotada[5][5]);
 void rotar270(int original[5][5], int rotada[5][5]);
+void interseccionRectangulos(const int A[4], const int B[4], int C[4]);
+void leerRectangulo(const char* mensaje, int rectangulo[4]);
+unsigned long long calcularCaminos(int n);
+void mostrarCaminosCuadricula();
 
 int main() {
     int opcion;
@@ -40,8 +44,10 @@ int main() {
     std::cout << "12. Verificador de cuadrado mágico" << std::endl;
     std::cout << "13. Detector de estrellas en galaxia" << std::endl;
     std::cout << "14. Rotación de matriz 5x5" << std::endl;
+    std::cout << "15. Intersección de rectángulos" << std::endl;
+    std::cout << "16. Caminos en una cuadrícula n×n" << std::endl;
     std::cout << "0. Salir" << std::endl;
-    std::cout << "Ingrese su opción (0-14): ";
+    std::cout << "Ingrese su opción (0-16): ";
     std::cin >> opcion;
 
     switch(opcion) {
@@ -451,6 +457,9 @@ int main() {
     }
 
     case 14: {
+        /*****************************************************
+            * PROGRAMA 14: ROTACIÓN DE MATRIZ 5X5 *
+        *****************************************************/
         // Declaramos la matriz 5x5 y la llenamos con los números del 1 al 25
         int matriz[5][5] = {
             { 1,  2,  3,  4,  5},
@@ -484,12 +493,48 @@ int main() {
         break;
     }
 
+    case 15: {
+        /*****************************************************
+            * PROGRAMA 15: INTERSECCIÓN DE RECTÁNGULOS *
+        *****************************************************/
+        // Declaramos los rectángulos A, B y C
+        int rectA[4], rectB[4], rectC[4];
+
+        // Limpiamos el buffer de entrada
+        std::cin.ignore();
+
+        // Leemos los rectángulos
+        leerRectangulo("Introduce los valores del rectángulo A (x y ancho alto): ", rectA);
+        leerRectangulo("Introduce los valores del rectángulo B (x y ancho alto): ", rectB);
+
+        // Calculamos la intersección
+        interseccionRectangulos(rectA, rectB, rectC);
+
+        // Mostramos resultados
+        if (rectC[2] <= 0 || rectC[3] <= 0) {
+            std::cout << "No hay intersección entre los rectángulos A y B." << std::endl;
+        } else {
+            std::cout << "Rectángulo intersección C: "
+                      << rectC[0] << " " << rectC[1] << " "
+                      << rectC[2] << " " << rectC[3] << std::endl;
+        }
+        break;
+    }
+
+    case 16: {
+        /*****************************************************
+            * PROGRAMA 16: CAMINOS EN UNA CUADRICULA n×n *
+        *****************************************************/
+        mostrarCaminosCuadricula();
+        break;
+    }
+
     case 0: {
         std::cout << "Saliendo del programa..." << std::endl;
         break;
     }
-        default: {
-            std::cout << "Opción no válida" << std::endl;
+    default: {
+        std::cout << "Opción no válida" << std::endl;
         }
     }
 
@@ -805,3 +850,74 @@ void rotar270(int original[5][5], int rotada[5][5]) {
         }
     }
 }
+
+// Case 15: Intersección de rectángulos
+void interseccionRectangulos(const int A[4], const int B[4], int C[4]) {
+    // Coordenadas de la esquina superior izquierda del rectángulo C
+    int xC = (A[0] > B[0]) ? A[0] : B[0]; // std::max equivalente
+    int yC = (A[1] > B[1]) ? A[1] : B[1]; // std::max equivalente
+
+    // Coordenadas de la esquina inferior derecha del rectángulo C
+    int xC2 = (A[0] + A[2] < B[0] + B[2]) ? A[0] + A[2] : B[0] + B[2]; // std::min equivalente
+    int yC2 = (A[1] + A[3] < B[1] + B[3]) ? A[1] + A[3] : B[1] + B[3]; // std::min equivalente
+
+    // Verificamos si hay intersección
+    if (xC2 > xC && yC2 > yC) {
+        C[0] = xC;
+        C[1] = yC;
+        C[2] = xC2 - xC; // Ancho
+        C[3] = yC2 - yC; // Alto
+    } else {
+        // No hay intersección, retornamos un rectángulo vacío
+        C[0] = C[1] = C[2] = C[3] = 0;
+    }
+}
+
+void leerRectangulo(const char* mensaje, int rectangulo[4]) {
+    std::cout << mensaje;
+
+    // Leemos los 4 valores separados por espacios
+    for (int i = 0; i < 4; ++i) {
+        std::cin >> rectangulo[i];
+    }
+
+    // Limpiamos el buffer de entrada
+    std::cin.ignore();
+}
+
+// Case 16: Caminos en una cuadrícula n×n
+unsigned long long calcularCaminos(int n) {
+    unsigned long long resultado = 1;
+
+    // Cálculo de C(2n, n) usando una fórmula eficiente:
+    // C(2n, n) = (2n * (2n-1) * ... * (n+1)) / (n * (n-1) * ... * 1)
+    for (int i = 1; i <= n; ++i) {
+        resultado *= (n + i);
+        resultado /= i;
+    }
+
+    return resultado;
+}
+
+void mostrarCaminosCuadricula() {
+    int n;
+
+    // Solicitar al usuario el tamaño de la cuadrícula
+    std::cout << "\n[CAMINOS EN CUADRÍCULA]" << std::endl;
+    std::cout << "Introduce el tamaño de la cuadrícula (n): ";
+    std::cin >> n;
+
+    // Validar entrada
+    if (n < 1) {
+        std::cout << "El tamaño debe ser un número positivo." << std::endl;
+        return;
+    }
+
+    // Calcular el número de caminos posibles
+    unsigned long long caminos = calcularCaminos(n);
+
+    // Mostrar el resultado con el formato requerido
+    std::cout << "Para una malla de " << n << "x" << n
+              << " puntos hay " << caminos << " caminos." << std::endl;
+}
+
